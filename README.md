@@ -14,7 +14,7 @@ services:
       - PGID=1000
       - TZ=America/Chicago
       - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
+      - TORRENTING_PORT=31890
     volumes:
       - /media/ArrStack/qbittorrent/config:/config
       - /media/ArrFiles/Downloads:/downloads #optional
