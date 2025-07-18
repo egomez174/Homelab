@@ -16,8 +16,8 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /media/arr/qbittorrent/config:/config
-      - /media/arr/qbittorrent/downloads:/downloads #optional
+      - /media/ArrStack/qbittorrent/config:/config
+      - /media/ArrFiles/Downloads:/downloads #optional
     restart: unless-stopped
 
 ############################
@@ -32,7 +32,7 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /media/ArrFiles/jellyfin/config:/config
+      - /media/ArrStack/jellyfin/config:/config
       - /media/ArrFiles/Movies:/Movies
       - /media/ArrFiles/TV_Shows:/TV_Shows
     ports:
@@ -54,6 +54,8 @@ services:
       - 6881:6881 #qbittorrent
       - 6881:6881/udp #qbitorrent
       - 9696:9696 #prowlarr
+      - 7878:7878 #radarr
+      - 32400:32400 #plex
     cap_add:
       - NET_ADMIN
     devices:
@@ -78,4 +80,59 @@ services:
       - TZ=America/Chicago
     volumes:
       - /media/ArrStack:/config
-    restart: unl
+    restart: unless-stopped
+
+############################
+# PLEX
+############################
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - /media/ArrStack/plex/library:/config
+      - /media/ArrFiles/TV_Shows:/TV_Shows
+      - /media/ArrFiles/Movies:/Movies
+    restart: unless-stopped
+
+############################
+# RADARR
+############################
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /media/ArrStack/radarr/data:/config
+      - /media/ArrFiles/Movies:/movies #optional
+      - /media/ArrFiles/Downloads:/downloads #optional
+    restart: unless-stopped
+
+############################
+#OVERSEERR
+############################
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /media/ArrStack/overseerr/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
