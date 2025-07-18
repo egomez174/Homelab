@@ -8,7 +8,11 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
-    network_mode: "service:gluetun"
+    ports:
+      - 8080:8080 #qbittorrent
+      - 6881:6881 #qbittorrent
+      - 6881:6881/udp #qbitorrent
+    network_mode: "arrstack_default"
     environment:
       - PUID=1000
       - PGID=1000
@@ -49,13 +53,6 @@ services:
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
-    ports:
-      - 8080:8080 #qbittorrent
-      - 6881:6881 #qbittorrent
-      - 6881:6881/udp #qbitorrent
-      - 9696:9696 #prowlarr
-      - 7878:7878 #radarr
-      - 32400:32400 #plex
     cap_add:
       - NET_ADMIN
     devices:
@@ -73,7 +70,9 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
-    network_mode: "service:gluetun"
+    network_mode: "arrstack_default"
+    ports: 
+      - 9696:9696
     environment:
       - PUID=1000
       - PGID=1000
@@ -89,7 +88,9 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: "service:gluetun"
+    network_mode: "arrstack_default"
+    ports:
+      - 32400:32400
     environment:
       - PUID=1000
       - PGID=1000
@@ -109,7 +110,9 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
-    network_mode: "service:gluetun"
+    network_mode: "arrstack_default"
+    ports:
+      - 7878:7878
     environment:
       - PUID=1000
       - PGID=1000
