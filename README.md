@@ -22,7 +22,7 @@ services:
     volumes:
       - /media/ArrStack/qbittorrent/config:/config
       - /media/ArrFiles/Downloads:/downloads #optional
-    restart: unless-stopped
+    restart: never
 
 ############################
 # JELLYFIN
