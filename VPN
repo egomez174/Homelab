@@ -1,0 +1,138 @@
+---
+services:
+
+############################
+# QBITTORRENT
+############################
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: service:gluetun
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - WEBUI_PORT=8080
+    volumes:
+      - /media/arrstack/qbittorrent/config:/config
+      - /media/arrfiles/Downloads:/downloads #optional
+    restart: unless-stopped
+
+############################
+# JELLYFIN
+############################
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /media/arrstack/jellyfin/config:/config
+      - /media/arrfiles/Movies:/Movies
+      - /media/arrfiles/TV_Shows:/TV_Shows
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    restart: unless-stopped
+
+############################
+# GLUETUN
+############################
+
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    ports:
+      - 6881:6881 #qbittorrent
+      - 6881:6881/udp #qbittorrent
+      - 8080:8080 #qbittorrent web port
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=ipvanish
+      - OPENVPN_USER=xxxxxx@gmail.com
+      - OPENVPN_PASSWORD=xxxxxxxxxx
+      - SERVER_COUNTRIES=United States
+    restart: unless-stopped
+
+############################
+# PROWLARR
+############################
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    ports: 
+      - 9696:9696
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /media/arrstack:/config
+    restart: unless-stopped
+
+############################
+# PLEX
+############################
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    ports:
+      - 32400:32400
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - /media/arrstack/plex/library:/config
+      - /media/arrfiles/TV_Shows:/TV_Shows
+      - /media/arrfiles/Movies:/Movies
+    restart: unless-stopped
+
+############################
+# RADARR
+############################
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /media/arrstack/radarr/data:/config
+      - /media/arrfiles/Movies:/movies #optional
+      - /media/arrfiles/Downloads:/downloads #optional
+    restart: unless-stopped
+
+############################
+# OVERSEERR
+############################
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /media/arrstack/overseerr/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
