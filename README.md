@@ -1,6 +1,8 @@
 # Homelab
 
+---
 services:
+
 ############################
 # QBITTORRENT
 ############################
@@ -12,17 +14,16 @@ services:
       - 8080:8080 #qbittorrent
       - 6881:6881 #qbittorrent
       - 6881:6881/udp #qbitorrent
-    network_mode: "arrstack_default"
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
       - WEBUI_PORT=8080
-      - TORRENTING_PORT=31890
+      - TORRENTING_PORT=6881
     volumes:
-      - /media/ArrStack/qbittorrent/config:/config
-      - /media/ArrFiles/Downloads:/downloads #optional
-    restart: never
+      - /media/arrstack/qbittorrent/config:/config
+      - /media/arrfiles/Downloads:/downloads #optional
+    restart: unless-stopped
 
 ############################
 # JELLYFIN
@@ -36,9 +37,9 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /media/ArrStack/jellyfin/config:/config
-      - /media/ArrFiles/Movies:/Movies
-      - /media/ArrFiles/TV_Shows:/TV_Shows
+      - /media/arrstack/jellyfin/config:/config
+      - /media/arrfiles/Movies:/Movies
+      - /media/arrfiles/TV_Shows:/TV_Shows
     ports:
       - 8096:8096
       - 8920:8920 #optional
@@ -59,8 +60,8 @@ services:
       - /dev/net/tun:/dev/net/tun
     environment:
       - VPN_SERVICE_PROVIDER=ipvanish
-      - OPENVPN_USER=XXXXXX@gmail.com
-      - OPENVPN_PASSWORD=XXXXXXXXX
+      - OPENVPN_USER=xxxxxx@gmail.com
+      - OPENVPN_PASSWORD=xxxxxx
       - SERVER_COUNTRIES=United States
 
 ############################
@@ -70,15 +71,14 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
-    network_mode: "arrstack_default"
-    ports: 
+    ports:
       - 9696:9696
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /media/ArrStack:/config
+      - /media/arrstack:/config
     restart: unless-stopped
 
 ############################
@@ -88,7 +88,6 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: "arrstack_default"
     ports:
       - 32400:32400
     environment:
@@ -98,9 +97,9 @@ services:
       - VERSION=docker
       - PLEX_CLAIM= #optional
     volumes:
-      - /media/ArrStack/plex/library:/config
-      - /media/ArrFiles/TV_Shows:/TV_Shows
-      - /media/ArrFiles/Movies:/Movies
+      - /media/arrstack/plex/library:/config
+      - /media/arrfiles/TV_Shows:/TV_Shows
+      - /media/arrfiles/Movies:/Movies
     restart: unless-stopped
 
 ############################
@@ -110,7 +109,6 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
-    network_mode: "arrstack_default"
     ports:
       - 7878:7878
     environment:
@@ -118,9 +116,9 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /media/ArrStack/radarr/data:/config
-      - /media/ArrFiles/Movies:/movies #optional
-      - /media/ArrFiles/Downloads:/downloads #optional
+      - /media/arrstack/radarr/data:/config
+      - /media/arrfiles/Movies:/movies #optional
+      - /media/arrfiles/Downloads:/downloads #optional
     restart: unless-stopped
 
 ############################
@@ -135,7 +133,7 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /media/ArrStack/overseerr/config:/config
+      - /media/arrstack/overseerr/config:/config
     ports:
       - 5055:5055
     restart: unless-stopped
