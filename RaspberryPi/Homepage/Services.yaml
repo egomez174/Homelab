@@ -1,0 +1,111 @@
+
+##########################################################################################################################
+
+- Media Management:
+  - Radarr:
+      icon: radarr.png
+      href: http://192.168.30.5:7878
+      description: Movie Manager
+      server: my-docker
+      container: radarr
+      widget:
+        type: radarr
+        url: http://192.168.30.5:7878
+        key: ${RADARR_KEY}
+        fields: ["wanted", "missing", "queued", "movies"]
+
+  - Prowlarr:
+      icon: prowlarr.png
+      href: http://192.168.30.5:9696
+      container: prowlarr
+      description: Indexer integration for downloads
+      widget:
+          type: prowlarr
+          url: http://192.168.30.5:9696
+          key: ${PROWLARR_KEY}
+          fields: ["numberOfGrabs", "numberOfQueries", "numberOfFailGrabs", "numberOfFailQueries"]
+
+################################################################################       
+- Utilities:
+  - Speedtest:
+        icon: speedtest-tracker.png
+        href: http://192.168.30.5:8081
+        description: Network speed tracker
+        container: speedtest
+        widget:
+          type: speedtest-tracker
+          url: http://192.168.30.5:8081
+          bitratePrecision: 0
+          fields: ["download", "upload", "ping"]
+
+  - Adguard:
+      icon: adguard-home.png
+      href: http://192.168.30.5
+      description: DNS Filter
+      container: adguard
+      widget:
+        type: adguard
+        url: http://192.168.30.5
+        username: ${USER}
+        password: ${PASS}
+        fields: ["queries", "blocked", "latency"]
+
+
+           
+##########################################################################################################################
+
+- Media Players:
+  - Jellyfin:  
+      icon: jellyfin.png
+      hreff: http://192.168.30.5:8096
+      container: jellyfin
+      description: Media Player
+      widget:
+          type: jellyfin
+          url: http://192.168.30.5:8096
+          key: ${JELLYFIN_PASS}
+          enableBlocks: true # optional, defaults to false
+          enableNowPlaying: true # optional, defaults to true
+          enableUser: true # optional, defaults to false
+          enableMediaControl: false # optional, defaults to true
+          showEpisodeNumber: true # optional, defaults to false
+          expandOneStreamToTwoRows: false # optional, defaults to true        
+          
+  - Plex:
+      icon: plex.png
+      hreff: http://192.168.30.5:32400
+      container: plex
+      description: Family Server        
+      widget:
+          type: plex
+          url: http://192.168.30.5:32400
+          key: ${PLEX_KEY} # see https://www.plexopedia.com/plex-media-server/general/plex-token/
+##########################################################################################################################
+
+- File Management:
+  - qBittorrent:
+        icon: qbittorrent.png
+        hreff: http://192.168.30.5:8080
+        description: Torrent Client
+        container: qbittorrent
+        widget:
+          type: qbittorrent
+          url: http://192.168.30.5:8080
+          username: ${USER}
+          password: ${PASS}
+          enableLeechProgress: true # optional, defaults to false
+          fields: ['download', 'seed', 'upload']
+
+##########################################################################################################################
+
+
+
+
+
+##########################################################################################################################
+
+
+
+
+
+##########################################################################################################################
