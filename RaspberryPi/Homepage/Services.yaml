@@ -98,7 +98,79 @@
 
 ##########################################################################################################################
 
+- NocturnOwl:
+  - Jellyfin:  
+      icon: jellyfin.png
+      href: http://192.168.30.5:8096
+      target: _blank
+       
+  - Plex:
+      icon: plex.png
+      href: http://192.168.30.5:32400    
+      target: _blank
 
+  - Radarr:
+      icon: radarr.png
+      href: http://192.168.30.5:7878
+      target: _blank  
+
+  - Prowlarr:
+      icon: prowlarr.png
+      href: http://192.168.30.5:9696
+      target: _blank  
+
+  - qBittorrent:
+      icon: qbittorrent.png
+      href: http://192.168.30.5:8080
+      target: _blank  
+
+  - PrivateHD:
+      icon: /icons/hd.png
+      href: https://privatehd.to/
+      target: _blank  
+
+##########################################################################################################################
+
+- Technical:
+
+  - Adguard Home:
+      icon: adguard-home.png
+      href: http://192.168.30.5
+      target: _blank
+
+  - Github - NocturnOwl:
+      icon: github.png
+      href: https://github.com/egomez174/Homelab
+      target: _blank
+
+  - HomePage Docs:
+      icon: homepage.png
+      href: https://gethomepage.dev/
+      target: _blank
+
+  - Portainer:
+       icon: portainer.png
+       href: https://192.168.30.5:9443/#!/home
+       target: _blank
+
+##########################################################################################################################
+
+- WGU:
+
+  - WGU Homepage:
+      icon: /icons/wgu.png
+      href: https://my.wgu.edu/home
+      target: _blank
+
+  - Try Hack Me:
+      icon: /icons/thm.png
+      href: https://tryhackme.com/dashboard
+      target: _blank
+
+  - Udemy:
+      icon: udemy.png
+      href: https://wgu.udemy.com/
+      target: _blank
 
 
 
