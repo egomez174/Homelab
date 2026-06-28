@@ -16,34 +16,45 @@ services:
       - TZ=America/Chicago
       - WEBUI_PORT=8080
     volumes:
-      - /media/arrstack/qbittorrent/config:/config
-      - /media/arrfiles/Movies/All_Movies:/allmovies
-      - /media/arrfiles/Movies/All_Movies:/mydownloads #optional
-      - /media/arrfiles/Movies/All_Movies/Torrents:/torrents
+      - /mnt/labfiles/docker-data/qbittorrent/config:/config
+      - /mnt/labfiles/torrents:/torrents
     restart: unless-stopped
 
 ############################
-# JELLYFIN
+# SONARR
 ############################
 
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:latest
-    container_name: jellyfin
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /mnt/labfiles/docker-data/sonar:/config
+      - /mnt/labfiles/torrents:/torrents/tv_shows
+    ports:
+      - 8989:8989
+    restart: unless-stopped    
+
+
+############################
+# RADARR
+############################
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    ports:
+      - 7878:7878
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
       - TZ=America/Chicago
     volumes:
-      - /media/arrstack/jellyfin/config:/config
-      - /media/arrfiles/Movies/All_Movies:/Movies
-      - /media/arrfiles/TV_Shows:/TV_Shows
-    ports:
-      - 8096:8096
-      - 8920:8920 #optional
-      - 7359:7359/udp #optional
-      - 1900:1900/udp #optional
-    dns:
-      - 1.1.1.1
+      - /mnt/labfiles/docker-data/radarr:/config
+      - /mnt/labfiles/torrents:/torrents/movies
     restart: unless-stopped
 
 ############################
@@ -66,6 +77,30 @@ services:
       - OPENVPN_USER=${USERNAME}
       - OPENVPN_PASSWORD=${PASS}
       - SERVER_COUNTRIES=United States
+    restart: always
+
+############################
+# JELLYFIN
+############################
+
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=America/Chicago
+    volumes:
+      - /mnt/labfiles/docker-data/jellyfin/config:/config
+      - /mnt/labfiles/docker-data/jellyfin/cache:/cache
+      - /mnt/labfiles/torrents:/Movies
+      - /mnt/labfiles/torrents:/TV_Shows
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+
     restart: unless-stopped
 
 ############################
@@ -77,58 +112,14 @@ services:
     container_name: prowlarr
     ports:
       - 9696:9696
-    dns:
-      - 1.1.1.1
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
       - TZ=America/Chicago
     volumes:
-      - /media/arrstack/prowlarr:/config
+      - /mnt/labfiles/docker-data/prowlarr:/config
     restart: unless-stopped
 
-############################
-# PLEX
-############################
-  plex:
-    image: lscr.io/linuxserver/plex:latest
-    container_name: plex
-    ports:
-      - 32400:32400
-    dns:
-      - 1.1.1.1
-    environment:
-      - PUID=${USER_ID}
-      - PGID=${GROUP_ID}
-      - TZ=Chicago/America
-      - VERSION=docker
-      - PLEX_CLAIM= #optional
-    volumes:
-      - /media/arrstack/plex/library:/config
-      - /media/arrfiles/Movies/All_Movies:/movies
-      - /media/arrfiles/Movies/All_Movies/movies:/movies2
-      - /media/arrfiles/TV_Shows:/tv_shows
-    restart: unless-stopped
-
-############################
-# RADARR
-############################
-
-  radarr:
-    image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
-    ports:
-      - 7878:7878
-    dns:
-      - 8.8.8.8
-    environment:
-      - PUID=${USER_ID}
-      - PGID=${GROUP_ID}
-      - TZ=America/Chicago
-    volumes:
-      - /media/arrstack/radarr/data:/config
-      - /media/arrfiles/Movies/All_Movies:/mymovies
-    restart: unless-stopped
 
 ############################
 # OVERSEERR
