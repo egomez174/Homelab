@@ -33,10 +33,10 @@ services:
       - TZ=America/Chicago
     volumes:
       - /mnt/labfiles/docker-data/sonar:/config
-      - /mnt/labfiles/torrents:/torrents/tv_shows
+      - /mnt/labfiles/torrents:/torrents
     ports:
       - 8989:8989
-    restart: unless-stopped    
+    restart: unless-stopped     
 
 
 ############################
@@ -54,7 +54,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - /mnt/labfiles/docker-data/radarr:/config
-      - /mnt/labfiles/torrents:/torrents/movies
+      - /mnt/labfiles/torrents:/torrents
     restart: unless-stopped
 
 ############################
@@ -120,20 +120,20 @@ services:
       - /mnt/labfiles/docker-data/prowlarr:/config
     restart: unless-stopped
 
-
 ############################
-# OVERSEERR
+# BAZARR
 ############################
 
-  overseerr:
-    image: lscr.io/linuxserver/overseerr:latest
-    container_name: overseerr
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
     environment:
-      - PUID=${USER_ID}
-      - PGID=${GROUP_ID}
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - /media/arrstack/overseerr/config:/config
+      - /mnt/labfiles/docker-data/bazarr/config:/config
+      - /mnt/labfiles/torrents:/torrents
     ports:
-      - 5055:5055
+      - 6767:6767
     restart: unless-stopped
