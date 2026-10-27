@@ -1,1 +1,17 @@
+############################
+# SONARR
+############################
 
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /mnt/labfiles/docker-data/sonar:/config
+      - /mnt/labfiles/torrents:/torrents
+    ports:
+      - 8989:8989
+    restart: unless-stopped
