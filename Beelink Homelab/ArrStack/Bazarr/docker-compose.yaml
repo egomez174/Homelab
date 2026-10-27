@@ -1,0 +1,17 @@
+############################
+# BAZARR
+############################
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /mnt/labfiles/docker-data/bazarr/config:/config
+      - /mnt/labfiles/torrents:/torrents
+    ports:
+      - 6767:6767
+    restart: unless-stopped
