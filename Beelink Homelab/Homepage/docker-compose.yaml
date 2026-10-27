@@ -1,16 +1,31 @@
 services:
+  dockerproxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest
+    container_name: dockerproxy
+    environment:
+      CONTAINERS: 1
+      SERVICES: 1
+      TASKS: 1
+      POST: 0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 127.0.0.1:2375:2375
+    restart: unless-stopped
+
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
-    ports:
-      - 3333:3000
-    volumes:
-      - /mnt/labfiles/docker-data/homepage/config:/app/config # Make sure your local config directory exists
-      - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
-      - /mnt/labfiles/docker-data/homepage/images:/app/public/images
-    environment:
-      HOMEPAGE_ALLOWED_HOSTS: gethomepage.dev,192.168.30.6:3333,api.github.com # required, may need port. See gethomepage.dev/installation/#homepage_allowed_hosts
-      headerStyle: boxed
     env_file:
       - .env
+    volumes:
+      - ./config:/app/config
+      - ./images:/app/public/images
+    ports:
+      - "3000:3000"
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: 192.168.30.6:3000,api.github.com
+      
+    depends_on:
+      - dockerproxy
     restart: unless-stopped
