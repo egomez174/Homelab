@@ -1,24 +1,5 @@
-
 ---
 services:
-
-############################
-# QBITTORRENT
-############################
-
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
-    network_mode: service:gluetun
-    environment:
-      - PUID=${USER_ID}
-      - PGID=${GROUP_ID}
-      - TZ=America/Chicago
-      - WEBUI_PORT=8080
-    volumes:
-      - /mnt/labfiles/docker-data/qbittorrent/config:/config
-      - /mnt/labfiles/torrents:/torrents
-    restart: unless-stopped
 
 ############################
 # SONARR
@@ -57,27 +38,6 @@ services:
       - /mnt/labfiles/torrents:/torrents
     restart: unless-stopped
 
-############################
-# GLUETUN
-############################
-
-  gluetun:
-    image: qmcgaw/gluetun
-    container_name: gluetun
-    ports:
-      - 6881:6881 #qbittorrent
-      - 6881:6881/udp #qbittorrent
-      - 8080:8080 #qbittorrent web port
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    environment:
-      - VPN_SERVICE_PROVIDER=ipvanish
-      - OPENVPN_USER=${USERNAME}
-      - OPENVPN_PASSWORD=${PASS}
-      - SERVER_COUNTRIES=United States
-    restart: always
 
 ############################
 # JELLYFIN
@@ -87,8 +47,6 @@ services:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
     environment:
-      - PUID=${USER_ID}
-      - PGID=${GROUP_ID}
       - TZ=America/Chicago
     volumes:
       - /mnt/labfiles/docker-data/jellyfin/config:/config
@@ -136,4 +94,23 @@ services:
       - /mnt/labfiles/torrents:/torrents
     ports:
       - 6767:6767
+    restart: unless-stopped
+
+    
+############################
+# SEER
+############################
+
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    init: true
+    environment:
+      - LOG_LEVEL=info
+      - TZ=America/Chicago
+      - PORT=5055
+    volumes:
+      - /mnt/labfiles/docker-data/seerr/config:/app/config
+    ports:
+      - 5055:5055
     restart: unless-stopped
