@@ -1,37 +1,30 @@
+---
 # For configuration options and examples, please see:
-# https://gethomepage.dev/configs/info-widgets/
+# https://gethomepage.dev/configs/settings/
 
-- greeting:
-    text_size: 4xl
-    text: NocturnOwl
 
-- datetime:
-    text_size: 4x1
-    format:
-        dateStyle: short
-        hour12: false
+title: NocturnOwl/Homepage
+target: _self
+headerstyle: boxed
 
-- datetime:
-    text_size: 4xl
-    format:
-        timeStyle: short
-        hour12: true
 
-- search:
-    provider: google # google, duckduckgo, bing, baidu, brave or custom
-    focus: true # Optional, will set focus to the search bar on page load
-    showSearchSuggestions: true # Optional, will show search suggestions. Defaults to false
-    target: _blank # One of _self, _blank, _parent or _top
-    
-- resources:
-    cpu: true
-    memory: true
-   # disk: /media
-    cputemp: true
-    tempmin: 0 # optional, minimum cpu temp
-    tempmax: 100 # optional, maximum cpu temp
-    uptime: true
-    units: imperial # only used by cpu temp, options: 'imperial' or 'metric'
-    refresh: 3000 # optional, in ms
-    diskUnits: bytes # optional, bytes (default) or bbytes. Only applies to disk
-    network: true # optional, uses 'default' if true or specify a network interface name
+background:
+    image: /images/background.png
+    blur: md # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
+    saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+    brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+    opacity: 50 # 0-100
+
+layout:
+
+  Media Management:
+      style: column
+             
+  Utilities:
+      style: column
+
+  Media Players:
+      style: column    
+
+  File Management:
+      style: column
