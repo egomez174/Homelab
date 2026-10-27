@@ -1,1 +1,17 @@
+############################
+# RADARR
+############################
 
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=America/Chicago
+    volumes:
+      - /mnt/labfiles/docker-data/radarr:/config
+      - /mnt/labfiles/torrents:/torrents
+    restart: unless-stopped
