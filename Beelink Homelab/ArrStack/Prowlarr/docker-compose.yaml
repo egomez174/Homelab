@@ -1,1 +1,16 @@
+############################
+# PROWLARR
+############################
 
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    ports:
+      - 9696:9696
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=America/Chicago
+    volumes:
+      - /mnt/labfiles/docker-data/prowlarr:/config
+    restart: unless-stopped
