@@ -11,8 +11,20 @@
       widget:
         type: radarr
         url: http://192.168.30.6:7878
-        key: {{HOMEPAGE_VAR_RADARR}}
+        key: "{{HOMEPAGE_VAR_RADARR}}"
         fields: ["wanted", "missing", "queued", "movies"]
+
+  - Sonarr:
+      icon: sonarr.png
+      href: http://192.168.30.6:8989
+      description: TV Show Manager
+      server: my-docker
+      container: sonarr
+      widget:
+        type: sonarr
+        url: http://192.168.30.6:8989
+        key: "{{HOMEPAGE_VAR_SONARR}}"
+        fields: ["wanted", "queued", "series"]
 
   - Prowlarr:
       icon: prowlarr.png
@@ -23,21 +35,60 @@
       widget:
           type: prowlarr
           url: http://192.168.30.6:9696
-          key: {{HOMEPAGE_VAR_PROWLARR}}
+          key: "{{HOMEPAGE_VAR_PROWLARR}}"
           fields: ["numberOfGrabs", "numberOfQueries", "numberOfFailGrabs", "numberOfFailQueries"]
+
+  - Seerr:
+      icon: seerr.png
+      href: http://192.168.30.6:5055
+      description: Media Request Manager
+      server: my-docker
+      container: seerr
+      widget:
+          type: seerr
+          url: http://192.168.30.6:5055
+          key: "{{HOMEPAGE_VAR_SEERR}}"
+          fields: ["requested", "approved", "denied"]
 
 ################################################################################       
 - Utilities:
   - Speedtest:
         icon: speedtest-tracker.png
-        href: http://192.168.30.6:8081
+        href: http://192.168.30.6:80
         description: Network speed tracker
-        container: speedtest
+        server: my-docker
+        container: speedtest-tracker
         widget:
-          type: speedtest-tracker
+          type: speedtest
           url: http://192.168.30.6:8081
+          version: 1
           bitratePrecision: 0
           fields: ["download", "upload", "ping"]
+
+  - Arcane:
+        icon: arcane.png
+        href: http://192.168.30.6:3552
+        description: Home Lab Dashboard
+        server: my-docker
+        container: arcane     
+        widget:
+          type: arcane
+          url: http://192.168.30.6:3552
+          env: 0 # required, 0 is Arcane default local environment
+          key: "{{HOMEPAGE_VAR_ARCANE}}"
+          fields: ["running", "stopped", "total", "image_updates"]
+
+  - Gluetun:
+        icon: gluetun.png
+        href: http://192.168.30.6:8000
+        description: VPN Client
+        server: my-docker
+        container: gluetun
+        widget:
+          type: gluetun
+          url: http://192.168.30.6:8000
+          key: "{{HOMEPAGE_VAR_GLUETUN}}"
+          fields: ["connected", "ip", "location"]
 
   - Adguard:
       icon: adguard-home.png
@@ -65,7 +116,8 @@
       widget:
           type: jellyfin
           url: http://192.168.30.6:8096
-          key: {{HOMEPAGE_VAR_JELLYFIN}}
+          key: "{{HOMEPAGE_VAR_JELLYFIN}}"
+          version: 2
           enableBlocks: true # optional, defaults to false
           enableNowPlaying: true # optional, defaults to true
           enableUser: true # optional, defaults to false
@@ -88,13 +140,14 @@
   - qBittorrent:
         icon: qbittorrent.png
         hreff: http://192.168.30.6:8080
+        server: my-docker
         description: Torrent Client
         container: qbittorrent
         widget:
           type: qbittorrent
           url: http://192.168.30.6:8080
-          username: {{HOMEPAGE_VAR_USER}}
-          password: {{HOMEPAGE_VAR_PASS}}
+          username: "{{HOMEPAGE_VAR_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_PASSWORD}}"
           enableLeechProgress: true # optional, defaults to false
           fields: ['download', 'seed', 'upload']
 
@@ -154,14 +207,5 @@
        icon: portainer.png
        href: https://192.168.30.6:9443/#!/home
        target: _blank
-
-##########################################################################################################################
-
-
-##########################################################################################################################
-
-
-
-
 
 ##########################################################################################################################
