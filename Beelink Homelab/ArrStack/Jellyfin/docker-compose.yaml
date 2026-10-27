@@ -1,1 +1,21 @@
+############################
+# JELLYFIN
+############################
 
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - TZ=America/Chicago
+    volumes:
+      - /mnt/labfiles/docker-data/jellyfin/config:/config
+      - /mnt/labfiles/docker-data/jellyfin/cache:/cache
+      - /mnt/labfiles/torrents:/Movies
+      - /mnt/labfiles/torrents:/TV_Shows
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+
+    restart: unless-stopped
