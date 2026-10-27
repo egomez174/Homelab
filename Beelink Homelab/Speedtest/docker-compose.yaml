@@ -1,1 +1,23 @@
-
+---
+services:
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    env_file:
+      - .env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_KEY=${SPEEDTEST_KEY}
+      - APP_URL=${SPEEDTEST_APP_URL}
+      - FORCE_HTTPS=false
+      - ASSET_URL=${SPEEDTEST_ASSET_URL}
+      - DB_CONNECTION=sqlite
+      - SPEEDTEST_SCHEDULE=0 * * * *
+      - CHART_BEGIN_AT_ZERO:true
+    volumes:
+      - /mnt/docker-data/speedtest/data:/config
+      - /mnt/docker-data/speedtest/keys:/config/keys
+    ports:
+      - 8081:80
+    restart: unless-stopped
